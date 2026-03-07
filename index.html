@@ -1,53 +1,56 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>BIST AI Pro</title>
-</head>
-
-<body style="font-family:Arial;background:#0b1220;color:white;text-align:center;padding:20px;">
-
-<h1>BIST AI Profesyonel Analiz</h1>
-
-<input id="hisse" placeholder="Örn: THYAO">
-<br><br>
-
-<button onclick="analiz()">Analiz Yap</button>
-
-<div id="sonuc" style="margin-top:30px;"></div>
-
 <script>
 
-function randomIndicator(min,max){
-return Math.random()*(max-min)+min;
+function calculateRSI(prices, period = 14) {
+  let gains = 0;
+  let losses = 0;
+
+  for (let i = 1; i <= period; i++) {
+    let difference = prices[i] - prices[i - 1];
+    if (difference >= 0) gains += difference;
+    else losses -= difference;
+  }
+
+  let avgGain = gains / period;
+  let avgLoss = losses / period;
+
+  if (avgLoss === 0) return 100;
+
+  let rs = avgGain / avgLoss;
+  return 100 - (100 / (1 + rs));
 }
 
-function analiz(){
+async function analiz(){
 
-let rsi = randomIndicator(10,90);
-let macd = randomIndicator(-2,2);
-let ema20 = randomIndicator(80,120);
-let ema50 = randomIndicator(80,120);
+let hisse = document.getElementById("hisse").value.toUpperCase();
+let sembol = hisse + ".IS";
+
+let url = "https://query1.finance.yahoo.com/v7/finance/chart/" + sembol;
+
+try{
+
+let response = await fetch(url);
+let data = await response.json();
+
+let closes = data.chart.result[0].indicators.quote[0].close;
+
+// Son 15 kapanış fiyatını al
+let rsi = calculateRSI(closes.slice(-15));
 
 let sinyal = "BEKLE 🟡";
 
-if(rsi < 30 && ema20 > ema50){
-sinyal = "GÜÇLÜ AL 🟢";
-}
-else if(rsi > 70){
-sinyal = "SAT / DİKKAT 🔴";
-}
+if(rsi < 30) sinyal = "GÜÇLÜ AL 🟢";
+else if(rsi > 70) sinyal = "SAT / DİKKAT 🔴";
 
 document.getElementById("sonuc").innerHTML =
-"RSI: " + rsi.toFixed(2) + "<br>" +
-"MACD: " + macd.toFixed(2) + "<br>" +
-"EMA20: " + ema20.toFixed(2) + "<br>" +
-"EMA50: " + ema50.toFixed(2) + "<br><br>" +
+"RSI: " + rsi.toFixed(2) + "<br><br>" +
 "<h2>SİNYAL: " + sinyal + "</h2>";
+
+}
+catch(error){
+document.getElementById("sonuc").innerHTML =
+"Veri alınamadı.";
+}
 
 }
 
 </script>
-
-</body>
-</html>
