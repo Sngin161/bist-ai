@@ -2,9 +2,31 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Test</title>
+<title>BIST AI Pro</title>
 </head>
-<body>
-<h1>Site Çalışıyor ✅</h1>
+
+<body style="font-family:Arial;background:#0b1220;color:white;text-align:center;padding:20px;">
+
+<h1>BIST AI Profesyonel</h1>
+
+<input id="hisse" placeholder="Örn: THYAO">
+<br><br>
+
+<button onclick="analiz()">Analiz Yap</button>
+
+<div id="sonuc" style="margin-top:30px;"></div>
+
+<script>
+
+function analiz(){
+
+document.getElementById("sonuc").innerHTML =
+"Analiz sistemi çalışıyor ✅<br><br>" +
+"Sonraki adımda canlı veri bağlanacak.";
+
+}
+
+</script>
+
 </body>
 </html>
