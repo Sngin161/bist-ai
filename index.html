@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BIST AI Analiz</title>
+<style>
+body{
+font-family:Arial;
+text-align:center;
+background:#0f172a;
+color:white;
+padding:40px;
+}
+input{
+padding:12px;
+font-size:16px;
+border-radius:8px;
+border:none;
+}
+button{
+padding:12px 20px;
+font-size:16px;
+background:#22c55e;
+border:none;
+border-radius:8px;
+color:white;
+margin-left:10px;
+}
+</style>
+</head>
+
+<body>
+
+<h1>BIST AI Analiz</h1>
+
+<p>Borsa İstanbul için yapay zeka analiz platformu</p>
+
+<input id="hisse" placeholder="Örnek: THYAO">
+<button onclick="analiz()">Analiz</button>
+
+<p id="sonuc"></p>
+
+<script>
+function analiz(){
+let h = document.getElementById("hisse").value;
+document.getElementById("sonuc").innerHTML =
+h + " için analiz sistemi yakında bağlanacak.";
+}
+</script>
+
+</body>
+</html>
