@@ -2,25 +2,50 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>BIST AI</title>
+<title>BIST AI Pro</title>
 </head>
+
 <body style="font-family:Arial;text-align:center;background:#0b1220;color:white;padding:40px;">
 
-<h1>BIST AI Analiz</h1>
+<h1>BIST AI Profesyonel Analiz</h1>
 
-<input id="hisse" placeholder="Hisse kodu">
+<input id="hisse" placeholder="Hisse kodu (Örn: THYAO)">
 <br><br>
 
-<button onclick="analiz()">Analiz Yap</button>
+<button onclick="analiz()">Teknik Analiz Yap</button>
 
-<p id="sonuc" style="margin-top:30px;"></p>
+<div id="sonuc" style="margin-top:30px;"></div>
 
 <script>
+
+// Basit örnek teknik analiz simülasyonu
 function analiz(){
-var h = document.getElementById("hisse").value;
-document.getElementById("sonuc").innerHTML =
-h + " için analiz hazırlanıyor...";
+
+let h = document.getElementById("hisse").value;
+
+// Rastgele RSI üretimi (şimdilik veri yok)
+let rsi = Math.floor(Math.random() * 100);
+
+// Trend belirleme
+let trend = "";
+
+if(rsi < 30){
+trend = "Aşırı Satım Bölgesi 📉 (Pozitif Sinyal)";
 }
+else if(rsi > 70){
+trend = "Aşırı Alım Bölgesi ⚠️ (Düzeltme Riski)";
+}
+else{
+trend = "Nötr Bölge ↔️";
+}
+
+document.getElementById("sonuc").innerHTML =
+"<h3>" + h + " Analizi</h3>" +
+"RSI: " + rsi + "<br><br>" +
+"Durum: " + trend;
+
+}
+
 </script>
 
 </body>
