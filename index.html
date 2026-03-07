@@ -1,54 +1,80 @@
 <script>
 
-function calculateRSI(prices, period = 14) {
-  let gains = 0;
-  let losses = 0;
+function ema(data, period){
+let k = 2 / (period + 1);
+let emaArray = [];
+emaArray[0] = data[0];
 
-  for (let i = 1; i <= period; i++) {
-    let difference = prices[i] - prices[i - 1];
-    if (difference >= 0) gains += difference;
-    else losses -= difference;
-  }
+for(let i=1;i<data.length;i++){
+emaArray[i] = data[i]*k + emaArray[i-1]*(1-k);
+}
 
-  let avgGain = gains / period;
-  let avgLoss = losses / period;
+return emaArray[emaArray.length-1];
+}
 
-  if (avgLoss === 0) return 100;
+function calculateMACD(data){
+let ema12 = ema(data,12);
+let ema26 = ema(data,26);
+return ema12 - ema26;
+}
 
-  let rs = avgGain / avgLoss;
-  return 100 - (100 / (1 + rs));
+function calculateRSI(prices, period = 14){
+let gains=0, losses=0;
+
+for(let i=1;i<=period;i++){
+let diff = prices[i]-prices[i-1];
+if(diff>=0) gains+=diff;
+else losses-=diff;
+}
+
+let avgGain=gains/period;
+let avgLoss=losses/period;
+
+if(avgLoss===0) return 100;
+
+let rs=avgGain/avgLoss;
+return 100-(100/(1+rs));
 }
 
 async function analiz(){
 
-let hisse = document.getElementById("hisse").value.toUpperCase();
-let sembol = hisse + ".IS";
+let hisse=document.getElementById("hisse").value.toUpperCase();
+let sembol=hisse+".IS";
 
-let url = "https://query1.finance.yahoo.com/v7/finance/chart/" + sembol;
+let url="https://query1.finance.yahoo.com/v7/finance/chart/"+sembol;
 
 try{
 
-let response = await fetch(url);
-let data = await response.json();
+let response=await fetch(url);
+let data=await response.json();
 
-let closes = data.chart.result[0].indicators.quote[0].close;
+let closes=data.chart.result[0].indicators.quote[0].close;
+let sonVeri=closes.slice(-30);
 
-// Son 15 kapanış fiyatını al
-let rsi = calculateRSI(closes.slice(-15));
+let rsi=calculateRSI(sonVeri);
+let macd=calculateMACD(sonVeri);
+let ema20=ema(sonVeri,20);
+let ema50=ema(sonVeri,50);
 
-let sinyal = "BEKLE 🟡";
+let sinyal="BEKLE 🟡";
 
-if(rsi < 30) sinyal = "GÜÇLÜ AL 🟢";
-else if(rsi > 70) sinyal = "SAT / DİKKAT 🔴";
+if(rsi<30 && ema20>ema50 && macd>0){
+sinyal="GÜÇLÜ AL 🟢";
+}
+else if(rsi>70 && ema20<ema50 && macd<0){
+sinyal="GÜÇLÜ SAT 🔴";
+}
 
-document.getElementById("sonuc").innerHTML =
-"RSI: " + rsi.toFixed(2) + "<br><br>" +
-"<h2>SİNYAL: " + sinyal + "</h2>";
+document.getElementById("sonuc").innerHTML=
+"RSI: "+rsi.toFixed(2)+"<br>"+
+"MACD: "+macd.toFixed(4)+"<br>"+
+"EMA20: "+ema20.toFixed(2)+"<br>"+
+"EMA50: "+ema50.toFixed(2)+"<br><br>"+
+"<h2>SİNYAL: "+sinyal+"</h2>";
 
 }
 catch(error){
-document.getElementById("sonuc").innerHTML =
-"Veri alınamadı.";
+document.getElementById("sonuc").innerHTML="Veri alınamadı.";
 }
 
 }
