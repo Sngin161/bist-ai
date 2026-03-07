@@ -7,22 +7,23 @@
 
 <body style="font-family:Arial;background:#0b1220;color:white;text-align:center;padding:20px;">
 
-<h1>BIST AI Profesyonel</h1>
+<h1>BIST Profesyonel Grafik</h1>
 
 <input id="hisse" placeholder="Örn: THYAO">
 <br><br>
 
-<button onclick="analiz()">Analiz Yap</button>
+<button onclick="grafikYukle()">Grafiği Göster</button>
 
-<div id="sonuc" style="margin-top:30px;"></div>
+<div id="grafik" style="margin-top:30px;"></div>
 
 <script>
 
-function analiz(){
+function grafikYukle(){
 
-document.getElementById("sonuc").innerHTML =
-"Analiz sistemi çalışıyor ✅<br><br>" +
-"Sonraki adımda canlı veri bağlanacak.";
+let h = document.getElementById("hisse").value.toUpperCase();
+
+document.getElementById("grafik").innerHTML = 
+'<iframe src="https://s.tradingview.com/widgetembed/?symbol=BIST:'+h+'&interval=D&theme=dark" width="100%" height="400"></iframe>';
 
 }
 
