@@ -2,49 +2,84 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>BIST AI Analiz</title>
+<title>BIST AI Pro</title>
+
 <style>
 body{
+margin:0;
 font-family:Arial;
-text-align:center;
-background:#0f172a;
+background:#0b1220;
 color:white;
-padding:40px;
+text-align:center;
 }
+
+header{
+padding:20px;
+background:#111a2e;
+font-size:22px;
+font-weight:bold;
+}
+
+.container{
+padding:20px;
+}
+
 input{
 padding:12px;
-font-size:16px;
+width:70%;
+max-width:300px;
 border-radius:8px;
 border:none;
+margin-top:20px;
 }
+
 button{
-padding:12px 20px;
-font-size:16px;
-background:#22c55e;
+padding:12px 18px;
 border:none;
 border-radius:8px;
+background:#22c55e;
 color:white;
 margin-left:10px;
+cursor:pointer;
+}
+
+.card{
+margin-top:30px;
+background:#111a2e;
+padding:20px;
+border-radius:12px;
+max-width:500px;
+margin-left:auto;
+margin-right:auto;
 }
 </style>
+
 </head>
 
 <body>
 
-<h1>BIST AI Analiz</h1>
+<header>
+BIST AI ANALİZ PLATFORMU
+</header>
 
-<p>Borsa İstanbul için yapay zeka analiz platformu</p>
+<div class="container">
 
-<input id="hisse" placeholder="Örnek: THYAO">
+<input id="hisse" placeholder="Hisse kodu (Örn: THYAO)">
 <button onclick="analiz()">Analiz</button>
 
-<p id="sonuc"></p>
+<div class="card" id="sonuc">
+Sonuç burada görünecek
+</div>
+
+</div>
 
 <script>
 function analiz(){
 let h = document.getElementById("hisse").value;
+
 document.getElementById("sonuc").innerHTML =
-h + " için analiz sistemi yakında bağlanacak.";
+"📊 " + h + " için analiz hazırlanıyor...<br><br>" +
+"⚡ Teknik analiz motoru bir sonraki aşamada eklenecek.";
 }
 </script>
 
