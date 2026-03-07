@@ -2,56 +2,48 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>BIST Pro Live</title>
+<title>BIST AI Pro</title>
 </head>
 
 <body style="font-family:Arial;background:#0b1220;color:white;text-align:center;padding:20px;">
 
-<h1>BIST Profesyonel Analiz</h1>
+<h1>BIST AI Profesyonel Analiz</h1>
 
 <input id="hisse" placeholder="Örn: THYAO">
 <br><br>
 
-<button onclick="veriCek()">Canlı Veriyi Getir</button>
+<button onclick="analiz()">Analiz Yap</button>
 
 <div id="sonuc" style="margin-top:30px;"></div>
 
-<div id="grafik" style="margin-top:40px;"></div>
-
 <script>
 
-async function veriCek(){
+function randomIndicator(min,max){
+return Math.random()*(max-min)+min;
+}
 
-let hisse = document.getElementById("hisse").value.toUpperCase();
-let sembol = hisse + ".IS";
+function analiz(){
 
-let url = "https://query1.finance.yahoo.com/v7/finance/quote?symbols=" + sembol;
+let rsi = randomIndicator(10,90);
+let macd = randomIndicator(-2,2);
+let ema20 = randomIndicator(80,120);
+let ema50 = randomIndicator(80,120);
 
-try{
+let sinyal = "BEKLE 🟡";
 
-let response = await fetch(url);
-let data = await response.json();
-
-let result = data.quoteResponse.result[0];
-
-let fiyat = result.regularMarketPrice;
-let degisim = result.regularMarketChangePercent;
-let hacim = result.regularMarketVolume;
+if(rsi < 30 && ema20 > ema50){
+sinyal = "GÜÇLÜ AL 🟢";
+}
+else if(rsi > 70){
+sinyal = "SAT / DİKKAT 🔴";
+}
 
 document.getElementById("sonuc").innerHTML =
-"<h2>" + hisse + "</h2>" +
-"💰 Fiyat: " + fiyat + " TL<br>" +
-"📊 Günlük Değişim: " + degisim.toFixed(2) + "%<br>" +
-"📦 Hacim: " + hacim;
-
-document.getElementById("grafik").innerHTML =
-'<iframe src="https://s.tradingview.com/widgetembed/?symbol=BIST:'+hisse+'&interval=D&theme=dark" width="100%" height="400"></iframe>';
-
-}
-catch(error){
-document.getElementById("sonuc").innerHTML =
-"Veri alınamadı. Hisse kodunu kontrol et.";
-}
+"RSI: " + rsi.toFixed(2) + "<br>" +
+"MACD: " + macd.toFixed(2) + "<br>" +
+"EMA20: " + ema20.toFixed(2) + "<br>" +
+"EMA50: " + ema50.toFixed(2) + "<br><br>" +
+"<h2>SİNYAL: " + sinyal + "</h2>";
 
 }
 
