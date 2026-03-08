@@ -14,7 +14,9 @@ color:white;
 text-align:center;
 }
 
-.container{padding:30px;}
+.container{
+padding:30px;
+}
 
 input{
 padding:10px;
@@ -44,18 +46,26 @@ min-width:320px;
 }
 
 .big{
-font-size:50px;
+font-size:45px;
 font-weight:bold;
 margin:15px 0;
 }
+
+.ai-box{
+margin-top:15px;
+font-size:15px;
+opacity:0.95;
+line-height:1.5;
+}
 </style>
+
 </head>
 
 <body>
 
 <div class="container">
 
-<h1>📊 BIST AI ANALİZ</h1>
+<h1>📊 BIST AI PROFESSIONAL</h1>
 
 <input id="hisse" placeholder="THYAO">
 <button onclick="analiz()">Analiz</button>
@@ -84,28 +94,26 @@ return;
 
 let color="#facc15";
 
-if(data.signal.includes("AL")) color="#22c55e";
-if(data.signal.includes("SAT")) color="#ef4444";
+if(data.signal && data.signal.includes("AL")) color="#22c55e";
+if(data.signal && data.signal.includes("SAT")) color="#ef4444";
 
 document.getElementById("panel").innerHTML=`
 <div class="card" style="background:${color}22;border:3px solid ${color}">
 <h2>${data.symbol}</h2>
 
-<div>RSI: ${data.rsi}</div>
-<div>EMA20: ${data.ema20}</div>
-<div>EMA50: ${data.ema50}</div>
-<div>MACD: ${data.macd}</div>
+<div>RSI: ${data.rsi || "-"}</div>
+<div>EMA20: ${data.ema20 || "-"}</div>
+<div>EMA50: ${data.ema50 || "-"}</div>
+<div>MACD: ${data.macd || "-"}</div>
 
-<div class="big">${data.score}</div>
+<div class="big">${data.score || "-"}</div>
 
-<div style="font-size:22px;font-weight:bold;">
-${data.signal}
+<div style="font-size:20px;font-weight:bold;">
+${data.signal || ""}
 </div>
 
-<br>
-
-<div style="font-size:16px;opacity:0.9;">
-${data.comment}
+<div class="ai-box">
+${data.ai_analysis || ""}
 </div>
 
 </div>
