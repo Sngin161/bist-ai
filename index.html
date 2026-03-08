@@ -18,6 +18,15 @@ text-align:center;
 padding:30px;
 }
 
+.card{
+margin-top:30px;
+padding:20px;
+border-radius:15px;
+background:#1e293b;
+display:inline-block;
+min-width:300px;
+}
+
 input{
 padding:10px;
 font-size:18px;
@@ -33,32 +42,41 @@ cursor:pointer;
 margin-left:10px;
 }
 
-#sonuc{
-margin-top:30px;
-font-size:20px;
-line-height:1.6;
+.big-score{
+font-size:40px;
+font-weight:bold;
+margin-top:10px;
+}
+
+.signal{
+font-size:24px;
+margin-top:10px;
+font-weight:bold;
 }
 </style>
+
 </head>
 
 <body>
+
 <div class="container">
 
-<h1>📊 BIST AI PRO</h1>
+<h1>📊 BIST AI PROFESSIONAL</h1>
 
 <input id="hisse" placeholder="THYAO">
-<button onclick="analiz()">Analiz Yap</button>
+<button onclick="analiz()">Analiz</button>
 
-<div id="sonuc"></div>
+<div id="panel"></div>
 
 </div>
 
 <script>
+
 async function analiz(){
 
 let h = document.getElementById("hisse").value.toUpperCase();
 
-document.getElementById("sonuc").innerHTML="Analiz yapılıyor...";
+document.getElementById("panel").innerHTML="Analiz yapılıyor...";
 
 try{
 
@@ -66,31 +84,39 @@ let response = await fetch("https://bist-ai-backend.onrender.com/analyze/"+h);
 let data = await response.json();
 
 if(data.error){
-document.getElementById("sonuc").innerHTML=data.error;
+document.getElementById("panel").innerHTML=data.error;
 return;
 }
 
-// Backend’den gelen veriler
-let rsi = data.rsi;
-let ema20 = data.ema20;
-let ema50 = data.ema50;
-let macd = data.macd;
-let score = data.score;
-let signal = data.signal;
+let color = "#facc15";
 
-// Frontend’e göster
-document.getElementById("sonuc").innerHTML =
-"RSI: "+rsi+"<br>"+
-"EMA20: "+ema20+"<br>"+
-"EMA50: "+ema50+"<br>"+
-"MACD: "+macd+"<br>"+
-"Skor: "+score+"<br>"+
-"Sinyal: "+signal;
+if(data.signal.includes("AL")) color="#22c55e";
+if(data.signal.includes("SAT")) color="#ef4444";
+
+document.getElementById("panel").innerHTML = `
+<div class="card" style="border:2px solid ${color}">
+<h2>${data.symbol}</h2>
+
+<div>RSI: ${data.rsi}</div>
+<div>EMA20: ${data.ema20}</div>
+<div>EMA50: ${data.ema50}</div>
+<div>MACD: ${data.macd}</div>
+
+<div class="big-score">Skor: ${data.score}</div>
+
+<div class="signal" style="color:${color}">
+${data.signal}
+</div>
+
+</div>
+`;
 
 }catch(e){
-document.getElementById("sonuc").innerHTML="Sunucu bağlantı hatası";
+document.getElementById("panel").innerHTML="Sunucu bağlantı hatası";
 }
+
 }
+
 </script>
 
 </body>
