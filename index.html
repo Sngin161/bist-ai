@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>BIST AI Pro</title>
+<title>BIST AI PRO</title>
 
 <style>
 body{
@@ -39,14 +39,12 @@ font-size:20px;
 line-height:1.6;
 }
 </style>
-
 </head>
 
 <body>
-
 <div class="container">
 
-<h1>📊 BIST AI ANALİZ</h1>
+<h1>📊 BIST AI PRO</h1>
 
 <input id="hisse" placeholder="THYAO">
 <button onclick="analiz()">Analiz Yap</button>
@@ -56,7 +54,6 @@ line-height:1.6;
 </div>
 
 <script>
-
 async function analiz(){
 
 let h = document.getElementById("hisse").value.toUpperCase();
@@ -73,27 +70,27 @@ document.getElementById("sonuc").innerHTML=data.error;
 return;
 }
 
+// Backend’den gelen veriler
 let rsi = data.rsi;
+let ema20 = data.ema20;
+let ema50 = data.ema50;
+let macd = data.macd;
+let score = data.score;
+let signal = data.signal;
 
-let sinyal = "BEKLE 🟡";
-
-if(rsi < 30){
-sinyal = "GÜÇLÜ AL 🟢";
-}
-else if(rsi > 70){
-sinyal = "SAT / DİKKAT 🔴";
-}
-
+// Frontend’e göster
 document.getElementById("sonuc").innerHTML =
-"RSI: " + rsi + "<br><br>" +
-"Sinyal: " + sinyal;
+"RSI: "+rsi+"<br>"+
+"EMA20: "+ema20+"<br>"+
+"EMA50: "+ema50+"<br>"+
+"MACD: "+macd+"<br>"+
+"Skor: "+score+"<br>"+
+"Sinyal: "+signal;
 
 }catch(e){
 document.getElementById("sonuc").innerHTML="Sunucu bağlantı hatası";
 }
-
 }
-
 </script>
 
 </body>
