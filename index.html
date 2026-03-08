@@ -1,71 +1,33 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>BIST AI Analiz</title>
-
-<style>
-body{
-background:#0f172a;
-color:white;
-font-family:Arial;
-text-align:center;
-}
-
-input{
-padding:10px;
-font-size:18px;
-}
-
-button{
-padding:10px 20px;
-font-size:18px;
-background:#22c55e;
-border:none;
-cursor:pointer;
-}
-
-#sonuc{
-margin-top:30px;
-font-size:22px;
-}
-</style>
-
-</head>
-
-<body>
-
-<h1>BIST AI ANALİZ</h1>
-
-<p>Hisse Kodu Gir</p>
-
-<input id="hisse" placeholder="THYAO">
-
-<button onclick="analiz()">Analiz Yap</button>
-
-<div id="sonuc"></div>
-
 <script>
 
 async function analiz(){
 
-let hisse=document.getElementById("hisse").value
+let hisse = document.getElementById("hisse").value.toUpperCase()
 
-let url="https://bist-ai-backend.onrender.com/analyze/"+hisse
+document.getElementById("sonuc").innerHTML="Analiz yapılıyor..."
 
-let veri=await fetch(url)
+try{
 
-let json=await veri.json()
+let veri = await fetch("https://bist-ai-backend.onrender.com/analyze/" + hisse)
+
+let json = await veri.json()
 
 if(json.error){
-document.getElementById("sonuc").innerHTML="Hata: "+json.error
+
+document.getElementById("sonuc").innerHTML="Hata: " + json.error
+
 }else{
-document.getElementById("sonuc").innerHTML="RSI: "+json.rsi
+
+document.getElementById("sonuc").innerHTML="RSI: " + json.rsi
+
+}
+
+}catch(e){
+
+document.getElementById("sonuc").innerHTML="Sunucu bağlantı hatası"
+
 }
 
 }
 
 </script>
-
-</body>
-</html>
