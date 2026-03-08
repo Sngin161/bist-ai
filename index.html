@@ -2,20 +2,28 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>BIST AI</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BIST AI Pro</title>
+
+<script src="https://s3.tradingview.com/tv.js"></script>
 
 <style>
 body{
+margin:0;
+font-family:Arial;
 background:#0f172a;
 color:white;
-font-family:Arial;
 text-align:center;
-padding-top:100px;
+}
+
+.container{
+padding:20px;
 }
 
 input{
 padding:10px;
 font-size:18px;
+width:200px;
 }
 
 button{
@@ -24,11 +32,16 @@ font-size:18px;
 background:#22c55e;
 border:none;
 cursor:pointer;
+margin-left:10px;
 }
 
 #sonuc{
-margin-top:30px;
-font-size:22px;
+margin-top:20px;
+font-size:20px;
+}
+
+#chart{
+margin-top:40px;
 }
 </style>
 
@@ -36,38 +49,56 @@ font-size:22px;
 
 <body>
 
-<h1>BIST AI ANALİZ</h1>
+<div class="container">
+
+<h1>📊 BIST AI PRO</h1>
 
 <input id="hisse" placeholder="THYAO">
-
-<button onclick="analiz()">Analiz Yap</button>
+<button onclick="analiz()">Analiz</button>
 
 <div id="sonuc"></div>
+
+<div id="chart"></div>
+
+</div>
 
 <script>
 
 async function analiz(){
 
-let hisse=document.getElementById("hisse").value.toUpperCase()
+let h = document.getElementById("hisse").value.toUpperCase();
 
-document.getElementById("sonuc").innerHTML="Analiz yapılıyor..."
+document.getElementById("sonuc").innerHTML="Analiz yapılıyor...";
 
 try{
 
-let response=await fetch("https://bist-ai-backend.onrender.com/analyze/"+hisse)
-
-let data=await response.json()
+// Backend RSI
+let response = await fetch("https://bist-ai-backend.onrender.com/analyze/"+h);
+let data = await response.json();
 
 if(data.error){
-document.getElementById("sonuc").innerHTML=data.error
-}else{
-document.getElementById("sonuc").innerHTML="RSI: "+data.rsi
+document.getElementById("sonuc").innerHTML=data.error;
+return;
 }
 
+// RSI göster
+document.getElementById("sonuc").innerHTML="RSI: "+data.rsi;
+
+// Grafik yükle
+new TradingView.widget({
+"container_id": "chart",
+"width": "100%",
+"height": 500,
+"symbol": "BIST:"+h,
+"interval": "D",
+"theme": "dark",
+"style": "1",
+"locale": "tr",
+"hide_top_toolbar": true
+});
+
 }catch(e){
-
-document.getElementById("sonuc").innerHTML="Sunucu bağlantı hatası"
-
+document.getElementById("sonuc").innerHTML="Bağlantı hatası";
 }
 
 }
